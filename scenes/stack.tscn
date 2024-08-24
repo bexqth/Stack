@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://of1ldw2lrcl1"]
+
+[ext_resource type="Script" path="res://scripts/Stack.cs" id="1_ed7qq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p0ub6"]
+disable_ambient_light = true
+albedo_color = Color(0.347983, 0.613804, 0.91882, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ywd5a"]
+size = Vector3(1, 0.1, 1)
+
+[node name="stack" type="Node3D"]
+script = ExtResource("1_ed7qq")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(1, 0.1, 1)
+material = SubResource("StandardMaterial3D_p0ub6")
+
+[node name="Area3D" type="Area3D" parent="CSGBox3D"]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBox3D/Area3D"]
+shape = SubResource("BoxShape3D_ywd5a")
+
+[connection signal="area_shape_entered" from="CSGBox3D/Area3D" to="." method="_on_area_3d_area_shape_entered"]
+[connection signal="body_entered" from="CSGBox3D/Area3D" to="." method="_on_area_3d_body_entered"]
