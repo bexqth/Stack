@@ -42,7 +42,7 @@ public partial class Stack : Node3D
 			float h, s, v;
 			lastColor.ToHsv(out h, out s, out v);
 
-			// Increment the hue value to create a spectrum of colors
+			
 			h += 0.05f; // Adjust this value to control the speed of color change
 			if (h > 1.0f) {
 				h = 0.0f;
@@ -57,7 +57,7 @@ public partial class Stack : Node3D
 
 			if (this.box.Material is StandardMaterial3D material) {
 				material.AlbedoColor = this.color;
-				// Debug print to confirm the color change
+				
 				//GD.Print("Material color changed to: ", this.color);
 			} else {
 				//GD.Print("Material is not a StandardMaterial3D");
@@ -93,7 +93,7 @@ public partial class Stack : Node3D
 	}
 
 	public Vector3 CutEdges(Stack stackUp) {
-		// Calculate the overlap on the X axis
+		
 		float belowLeftX = stackUp.Position.X - stackUp.box.Size.X / 2;
 		float belowRightX = stackUp.Position.X + stackUp.box.Size.X / 2;
 		float currentLeftX = Position.X - box.Size.X / 2;
@@ -115,12 +115,12 @@ public partial class Stack : Node3D
 
 		if (overlapWidthX > 0 && overlapWidthZ > 0)
 		{
-			// Adjust the size and position of the box to keep only the overlapping part
+			
 			box.Size = new Vector3(overlapWidthX, box.Size.Y, overlapWidthZ);
 			Position = new Vector3((overlapLeftX + overlapRightX) / 2, Position.Y, (overlapLeftZ + overlapRightZ) / 2);
 			return this.box.Size;
 		} else {
-			// If there's no overlap, the block falls off
+			
 			GD.Print("No overlap");
 			EmitSignal(nameof(Stack.StackMissed), this);
 		}
