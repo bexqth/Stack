@@ -1,29 +1,66 @@
-[gd_scene load_steps=3 format=3 uid="uid://rkre8dv1n88h"]
+[gd_scene load_steps=7 format=3 uid="uid://rkre8dv1n88h"]
 
 [ext_resource type="Script" path="res://scripts/Global.cs" id="1_jde0g"]
 [ext_resource type="Script" path="res://scripts/SpawnPoint.cs" id="2_mwdvb"]
+[ext_resource type="Script" path="res://scripts/Camera3D.cs" id="3_k02iq"]
+[ext_resource type="PackedScene" uid="uid://of1ldw2lrcl1" path="res://scenes/stack.tscn" id="4_7tghd"]
 
-[node name="Node" type="Node"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lvgb1"]
+albedo_color = Color(0.34902, 0.615686, 0.917647, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_grksh"]
+size = Vector3(2.05467, 0.1, 1.45516)
+
+[node name="Node" type="Node" node_paths=PackedStringArray("ScoreLabel", "previousStack")]
 script = ExtResource("1_jde0g")
+ScoreLabel = NodePath("Camera3D/ScoreLabel")
+previousStack = NodePath("stack")
 
 [node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(0.483121, 0, 0, 0, 1, 0, 0, 0, 0.682237, 0, 0, 0)
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Node3D"]
-transform = Transform3D(6.46, 0, 0, 0, -0.02, 0, 0, 0, 4.76, 0, 0, 0)
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+visible = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D/StaticBody3D"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+size = Vector3(1, 0.1, 1)
+material = SubResource("StandardMaterial3D_lvgb1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0547472, -0.00683594, -0.139528)
+shape = SubResource("BoxShape3D_grksh")
 
 [node name="RayCast3D_left" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11038, 0.1, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.2, 0)
 script = ExtResource("2_mwdvb")
 newStackDirection = "left"
 
 [node name="RayCast3D_right" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -2)
 script = ExtResource("2_mwdvb")
 newStackDirection = "right"
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.736097, -0.338438, 0.586192, 0, 0.866025, 0.5, -0.676876, -0.368049, 0.637479, 1.26, 2.046, 1.344)
+transform = Transform3D(0.736097, -0.338438, 0.586192, 0, 0.866025, 0.5, -0.676876, -0.368049, 0.637479, 1.32796, 1.80984, 1.37976)
+script = ExtResource("3_k02iq")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 1, 0)
+
+[node name="ScoreLabel" type="Label" parent="Camera3D"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -37.0
+offset_top = 126.0
+offset_right = 37.0
+offset_bottom = 214.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "30"
+
+[node name="stack" parent="." instance=ExtResource("4_7tghd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0457069, 0, -0.054095)
